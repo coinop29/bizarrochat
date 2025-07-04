@@ -2,16 +2,42 @@
 <html>
 <head>
     <title>Bizzaro Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+        .message { margin-bottom: 10px; }
+        .username { font-weight: bold; }
+    </style>
 </head>
 <body>
     <h1>Bizzaro Chat</h1>
-    <form method="post">
-        <textarea name="message" rows="4" cols="50" placeholder="Enter your message here..."></textarea><br>
-        <input type="submit" value="Send">
-    </form>
-    {% if translated %}
-        <h2>Translated Message:</h2>
-        <p>{{ translated }}</p>
+
+    {% if username %}
+        <p>Welcome, <strong>{{ username }}</strong>! <a href="/logout">Change name</a></p>
+        <div class="chat-box">
+            {% for user, msg in chat_history %}
+                <div class="message"><span class="username">{{ user }}:</span> {{ msg }}</div>
+            {% endfor %}
+        </div>
+        <form method="post">
+            <textarea name="message" rows="3" cols="50" placeholder="Type your message..." required></textarea>
+            <br><br>
+            <button type="submit">Send</button>
+        </form>
+    {% else %}
+        <form method="post">
+            <input type="text" name="username" placeholder="Enter your name" required>
+            <br><br>
+            <textarea name="message" rows="3" cols="50" placeholder="Type your message..." required></textarea>
+            <br><br>
+            <button type="submit">Send</button>
+        </form>
     {% endif %}
 </body>
 </html>
